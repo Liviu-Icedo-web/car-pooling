@@ -16,15 +16,17 @@ var Cars = make(map[int] Car)
 func AddCar(w http.ResponseWriter, r *http.Request) {	
 	var car Car
 	err := json.NewDecoder(r.Body).Decode(&car)
-	if err != nil{
-		http.Error(w, "Bad Request", http.StatusBadRequest)
-		w.WriteHeader(404)
+	if err != nil{		
+		http.Error(w, "Not Accepted format", http.StatusNotAcceptable)
 		return
 	}
 	if _, ok := Cars[car.Id]; ok {
-		http.Error(w, "Already exists an user with the same id", http.StatusConflict)
+		http.Error(w, "Already exists an CAR with the same id", http.StatusConflict)
 		return
 	}else{
+		log.Println("Car: ", car)	
+		log.Println("Car Id: ", car.Id)
+		log.Println("Seats: ", car.Seats)	
 		Cars[car.Id] = car
 		log.Println("Post Cars: ", car)
 	}	
